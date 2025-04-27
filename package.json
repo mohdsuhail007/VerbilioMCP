@@ -9,10 +9,10 @@
     "watch": "tsc --watch"
   },
   "bin": {
-    "mcp-server-github": "dist/index.js"
+    "server-verbilio": "build/index.js"
   },
   "files": [
-    "dist"
+    "build"
   ],
   "keywords": [],
   "author": "",
