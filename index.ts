@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import fetch, { Request, Response } from 'node-fetch';
 import { VERSION } from './common/version.js';
-import { NodeChainSchema, createNode } from './operations/createNode.js';
+import { NodeChainSchema, updateNode } from './operations/createNode.js';
 
 if (!globalThis.fetch) {
   globalThis.fetch = fetch as unknown as typeof global.fetch;
@@ -28,7 +28,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: 'createNode',
+        name: 'updateNode',
         description: 'Create a new node',
         inputSchema: zodToJsonSchema(NodeChainSchema),
       },
@@ -38,16 +38,18 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 
 server.setRequestHandler(CallToolRequestSchema, async request => {
   try {
+    console.log('🚀 ~ request:', request);
     if (!request.params.arguments) {
       throw new Error('Arguments are required');
     }
 
     switch (request.params.name) {
-      case 'createNode':
+      case 'updateNode':
         const args = NodeChainSchema.parse(request.params.arguments);
-        const node = await createNode(args);
+        const node = await updateNode(args);
         return {
-          content: JSON.stringify(node, null, 2),
+          type: 'text',
+          content: JSON.stringify(node?.json),
         };
       default:
         throw new Error(`Unknown tool: ${request.params.name}`);

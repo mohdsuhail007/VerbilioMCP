@@ -29,7 +29,6 @@ const USER_AGENT = `modelcontextprotocol/verbiliomcp/v${VERSION} ${getUserAgent(
 
 export async function createNodeRequest(url: string, options: RequestOptions = {}): Promise<unknown> {
   const headers: Record<string, string> = {
-    Accept: 'application/vnd.github.v3+json',
     'Content-Type': 'application/json',
     'User-Agent': USER_AGENT,
     ...options.headers,
