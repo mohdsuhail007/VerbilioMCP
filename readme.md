@@ -1,10 +1,10 @@
 ```json
 {
   "mcpServers": {
-    "github": {
+    "verbilio": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-verbilio"],
-      "env": { "LANGFLOW_URL": "<YOUR_TOKEN>", "WORKFLOW_ID": "<WORKFLOW_ID>", "API_KEY": "<API_KEY>" }
+      "args": ["-y", "@mohdsuhail007/server-verbilio"],
+      "env": { "LANGFLOW_URL": "<YOUR_TOKEN>", "FLOW_ID": "<FLOW_ID>", "API_KEY": "<API_KEY>" }
     }
   }
 }

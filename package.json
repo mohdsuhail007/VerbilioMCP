@@ -1,23 +1,31 @@
 {
-  "name": "@modelcontextprotocol/server-verbilio",
+  "name": "@mohdsuhail007/server-verbilio",
   "version": "1.0.0",
   "description": "MCP server for using the langflow API",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc && chmod 755 build/index.js",
-    "prepare": "npm run build",
-    "watch": "tsc --watch"
+  "keywords": [],
+  "homepage": "https://github.com/mohdsuhail007/VerbilioMCP#readme",
+  "bugs": {
+    "url": "https://github.com/mohdsuhail007/VerbilioMCP/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohdsuhail007/VerbilioMCP.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
   "bin": {
     "server-verbilio": "build/index.js"
   },
   "files": [
     "build"
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",
     "dotenv": "^16.5.0",

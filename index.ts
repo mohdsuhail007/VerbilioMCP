@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import fetch, { Request, Response } from 'node-fetch';
 import { VERSION } from './common/version.js';
-import { NodeChainSchema, updateNode } from './operations/createNode.js';
+import { NodeChainSchema, updateFlow } from './operations/createNode.js';
 
 if (!globalThis.fetch) {
   globalThis.fetch = fetch as unknown as typeof global.fetch;
@@ -28,8 +28,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: 'updateNode',
-        description: 'Create a new node',
+        name: 'updateFlow',
+        description: 'Update the flow',
         inputSchema: zodToJsonSchema(NodeChainSchema),
       },
     ],
@@ -44,15 +44,19 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
     }
 
     switch (request.params.name) {
-      case 'updateNode':
+      case 'updateFlow':
         try {
           const args = NodeChainSchema.parse(request.params.arguments);
-          const node = await updateNode(args);
+          const node = await updateFlow(args);
           return {
             type: 'text',
             content: [{ type: 'text', text: JSON.stringify(node, null, 2) }],
           };
         } catch (error) {
+          return {
+            type: 'text',
+            content: [{ type: 'text', text: JSON.stringify(error, null, 2) }],
+          };
           console.log('🚀 ~ error:', error);
         }
       default:

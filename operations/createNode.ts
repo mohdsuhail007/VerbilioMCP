@@ -24,27 +24,44 @@ export const NodeChainSchema = z.object({
 });
 
 const LANGFLOW_URL = process.env.LANGFLOW_URL;
-const WORKFLOW_ID = process.env.LANGFLOW_WORKFLOW_ID;
-const API_KEY = process.env.API_KEY;
+const FLOW_ID = process.env.FLOW_ID;
+export const LANGFLOW_API_KEY = process.env.API_KEY;
 
-export async function updateNode(nodesData: z.infer<typeof NodeChainSchema>) {
-  // const url = `${LANGFLOW_URL}/api/v1/flows/${WORKFLOW_ID}/add_node`;
+console.log('API_KEY:', JSON.stringify({ KEY: LANGFLOW_API_KEY }, null, 2));
+
+export async function updateFlow(nodesData: z.infer<typeof NodeChainSchema>) {
   try {
-    const url = 'http://localhost:3000/api/v1/flows/289acde4-00cc-4176-8601-9708c4e82a71';
-    const response = await createNodeRequest(url, {
-      method: 'PATCH',
+    const url = `${LANGFLOW_URL}/api/v1/flows/${FLOW_ID}`;
+    console.log('Request URL:', url);
+    console.log('Request payload:', JSON.stringify(nodesData.json, null, 2));
+
+    const requestOptions = {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${API_KEY}`,
       },
-      body: {
-        ...nodesData.json,
-      },
-    });
-    console.log(response, null, 2);
+      body: NodeChainSchema.parse(nodesData).json,
+    };
 
-    return NodeChainSchema.parse(response);
+    console.log('Request options:', JSON.stringify(requestOptions, null, 2));
+
+    const rawResponse = await createNodeRequest(url, requestOptions);
+    console.log('Raw API response:', JSON.stringify(rawResponse, null, 2));
+
+    if (!rawResponse) {
+      throw new Error('No response received from API');
+    }
+
+    // const parsed = NodeChainSchema.parse(rawResponse);
+    // console.log('Parsed response:', JSON.stringify(parsed, null, 2));
+
+    return rawResponse;
   } catch (error) {
-    console.log('🚀 ~ updateNode ~ error:', error);
+    console.error(`Error in updateNode: ${LANGFLOW_URL}/api/v1/flows/${FLOW_ID}`, error);
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+    throw error;
   }
 }
