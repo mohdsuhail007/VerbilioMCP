@@ -45,12 +45,16 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
 
     switch (request.params.name) {
       case 'updateNode':
-        const args = NodeChainSchema.parse(request.params.arguments);
-        const node = await updateNode(args);
-        return {
-          type: 'text',
-          content: JSON.stringify(node?.json),
-        };
+        try {
+          const args = NodeChainSchema.parse(request.params.arguments);
+          const node = await updateNode(args);
+          return {
+            type: 'text',
+            content: [{ type: 'text', text: JSON.stringify(node, null, 2) }],
+          };
+        } catch (error) {
+          console.log('🚀 ~ error:', error);
+        }
       default:
         throw new Error(`Unknown tool: ${request.params.name}`);
     }
@@ -66,7 +70,6 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
 async function runServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log('Server started');
 }
 
 runServer().catch(error => {
