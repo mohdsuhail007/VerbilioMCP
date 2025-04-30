@@ -27,8 +27,6 @@ const LANGFLOW_URL = process.env.LANGFLOW_URL;
 const FLOW_ID = process.env.FLOW_ID;
 export const LANGFLOW_API_KEY = process.env.API_KEY;
 
-console.log('API_KEY:', JSON.stringify({ KEY: LANGFLOW_API_KEY }, null, 2));
-
 export async function updateFlow(nodesData: z.infer<typeof NodeChainSchema>) {
   try {
     const url = `${LANGFLOW_URL}/api/v1/flows/${FLOW_ID}`;
@@ -36,7 +34,7 @@ export async function updateFlow(nodesData: z.infer<typeof NodeChainSchema>) {
     console.log('Request payload:', JSON.stringify(nodesData.json, null, 2));
 
     const requestOptions = {
-      method: 'GET',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -58,6 +56,32 @@ export async function updateFlow(nodesData: z.infer<typeof NodeChainSchema>) {
     return rawResponse;
   } catch (error) {
     console.error(`Error in updateNode: ${LANGFLOW_URL}/api/v1/flows/${FLOW_ID}`, error);
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+    throw error;
+  }
+}
+export async function getFlowData() {
+  try {
+    const url = `${LANGFLOW_URL}/api/v1/flows/${FLOW_ID}`;
+
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const rawResponse = await createNodeRequest(url, requestOptions);
+
+    if (!rawResponse) {
+      throw new Error('No response received from API');
+    }
+
+    return rawResponse;
+  } catch (error) {
     if (error instanceof Error) {
       console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);

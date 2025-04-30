@@ -28,8 +28,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: 'updateFlow',
-        description: 'Update the flow',
+        name: 'update_flow',
+        description: 'Updates a node or edge in the Langflow workflow',
         inputSchema: zodToJsonSchema(NodeChainSchema),
       },
     ],
@@ -44,18 +44,18 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
     }
 
     switch (request.params.name) {
-      case 'updateFlow':
+      case 'update_flow':
         try {
           const args = NodeChainSchema.parse(request.params.arguments);
           const node = await updateFlow(args);
           return {
             type: 'text',
-            content: [{ type: 'text', text: JSON.stringify(node, null, 2) }],
+            content: [{ type: 'text', text: `Flow updated:\n${JSON.stringify(node, null, 2)}` }],
           };
         } catch (error) {
           return {
             type: 'text',
-            content: [{ type: 'text', text: JSON.stringify(error, null, 2) }],
+            content: [{ type: 'text', text: `Flow updated:\n${JSON.stringify(error, null, 2)}` }],
           };
           console.log('🚀 ~ error:', error);
         }
