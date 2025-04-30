@@ -23,6 +23,8 @@ export const NodeChainSchema = z.object({
   json: z.any(),
 });
 
+export const GetFlowData = z.object({});
+
 const LANGFLOW_URL = process.env.LANGFLOW_URL;
 const FLOW_ID = process.env.FLOW_ID;
 export const LANGFLOW_API_KEY = process.env.API_KEY;

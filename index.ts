@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import fetch, { Request, Response } from 'node-fetch';
 import { VERSION } from './common/version.js';
-import { NodeChainSchema, updateFlow } from './operations/createNode.js';
+import { GetFlowData, getFlowData, NodeChainSchema, updateFlow } from './operations/createNode.js';
 
 if (!globalThis.fetch) {
   globalThis.fetch = fetch as unknown as typeof global.fetch;
@@ -31,6 +31,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         name: 'update_flow',
         description: 'Updates a node or edge in the Langflow workflow',
         inputSchema: zodToJsonSchema(NodeChainSchema),
+      },
+      {
+        name: 'get_flow_data',
+        description: 'Gets the current Langflow workflow data',
+        inputSchema: zodToJsonSchema(GetFlowData),
       },
     ],
   };
@@ -57,7 +62,20 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
             type: 'text',
             content: [{ type: 'text', text: `Flow updated:\n${JSON.stringify(error, null, 2)}` }],
           };
-          console.log('🚀 ~ error:', error);
+        }
+
+      case 'get_flow_data':
+        try {
+          const flowData = await getFlowData();
+          return {
+            type: 'text',
+            content: [{ type: 'text', text: `Flow data:\n${JSON.stringify(flowData, null, 2)}` }],
+          };
+        } catch (error) {
+          return {
+            type: 'text',
+            content: [{ type: 'text', text: `Flow data:\n${JSON.stringify(error, null, 2)}` }],
+          };
         }
       default:
         throw new Error(`Unknown tool: ${request.params.name}`);
