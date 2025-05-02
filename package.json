@@ -28,16 +28,23 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",
+    "@supabase/supabase-js": "^2.49.4",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jose": "^6.0.10",
     "node-fetch": "^3.3.2",
+    "postgres": "^3.4.5",
     "universal-user-agent": "^7.0.2",
     "zod": "^3.22.4",
     "zod-to-json-schema": "^3.23.5"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.6.12",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
     "@types/node": "^22.15.2",
-    "typescript": "^5.8.3",
-    "shx": "^0.3.4"
+    "@types/node-fetch": "^2.6.12",
+    "shx": "^0.3.4",
+    "typescript": "^5.8.3"
   }
 }
